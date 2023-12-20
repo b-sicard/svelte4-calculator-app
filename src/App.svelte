@@ -6,11 +6,12 @@
   let number = '0'
   let total = 0
   let hasNumberChange = true
+  
   const calc = {
-    '+': (n, t) => n + t,
-    '-': (n, t) => t === 0 ? n : t - n,
-    '*': (n, t) => t === 0 ? n : n * t,
-    '/': (n, t) => t === 0 ? n : t / n
+    '+': () => parseFloat(number) + total,
+    '-': () => total === 0 ? parseFloat(number) : total - parseFloat(number),
+    '*': () => total === 0 ? parseFloat(number) : parseFloat(number) * total,
+    '/': () => total === 0 ? parseFloat(number) : total / parseFloat(number)
   }
 
   function operation(o) {
@@ -25,7 +26,7 @@
       operator = o
     }
 
-    total = calc[operator](parseFloat(number), total)
+    total = calc[operator]()
 
     operator = o
     hasNumberChange = false
@@ -77,7 +78,7 @@
     if (!total) return
     hasNumberChange = false
     calcul = `${total} ${operator} ${number} =`
-    total = calc[operator](parseFloat(number), total)
+    total = calc[operator]()
   }
 
   function percentage() {
@@ -86,7 +87,7 @@
 
     const hasEqual = calcul.includes('=')
     if (hasEqual) {
-      number = total
+      number = total.toString()
       operator = ''
       calcul = ''
       total = 0
@@ -95,10 +96,10 @@
     switch (operator) {
       case '+':
       case '-':
-        number =  total * (parseFloat(number) / 100)
+        number =  `${total * (parseFloat(number) / 100)}`
         break;
       default:
-        number = number / 100
+        number = `${parseFloat(number) / 100}`
         break;
     }
   }
@@ -107,7 +108,7 @@
 
     const hasEqual = calcul.includes('=')
     if (hasEqual) {
-      number = total
+      number = total.toString()
       calcul = ''
       total = 0
     }
